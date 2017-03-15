@@ -13,6 +13,7 @@ bin/
 gen/
 .gradle/
 build/
+path to the Lib folder/
 
 # Local configuration file (sdk path, etc)
 local.properties
