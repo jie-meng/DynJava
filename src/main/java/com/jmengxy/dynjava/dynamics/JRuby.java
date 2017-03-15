@@ -1,6 +1,7 @@
 package com.jmengxy.dynjava.dynamics;
 
 import com.sun.tools.javac.util.Pair;
+import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 
@@ -9,7 +10,7 @@ public class JRuby implements DynamicInterpreter {
     private ScriptingContainer interpreter;
 
     public JRuby() {
-        interpreter = new ScriptingContainer();
+        interpreter = new ScriptingContainer(LocalVariableBehavior.PERSISTENT);
     }
 
     public void close() {
@@ -21,17 +22,15 @@ public class JRuby implements DynamicInterpreter {
 
     public String getString(String name, String defaultValue) {
         Object o = interpreter.get(name);
-        if (o instanceof String) {
-            return (String)o;
-        } else {
-            return defaultValue;
-        }
+        return o instanceof String ? (String) o : defaultValue;
     }
 
     public int getInteger(String name, int defaultValue) {
         Object o = interpreter.get(name);
         if (o instanceof Integer) {
             return ((Integer) o).intValue();
+        } else if (o instanceof Long) {
+            return ((Long)o).intValue();
         } else {
             return defaultValue;
         }
@@ -50,11 +49,7 @@ public class JRuby implements DynamicInterpreter {
 
     public boolean getBoolean(String name, boolean defaultValue) {
         Object o = interpreter.get(name);
-        if (o instanceof Boolean) {
-            return ((Boolean) o).booleanValue();
-        } else {
-            return defaultValue;
-        }
+        return o instanceof Boolean ? ((Boolean) o).booleanValue() : defaultValue;
     }
 
     public void setString(String name, String value) {
@@ -74,12 +69,20 @@ public class JRuby implements DynamicInterpreter {
     }
 
     public Pair<Boolean, String> parseLine(String line) {
-        interpreter.runScriptlet(line);
-        return Pair.of(true, "");
+        try {
+            interpreter.runScriptlet(line);
+            return Pair.of(true, "");
+        } catch (Exception e) {
+            return Pair.of(false, e.toString());
+        }
     }
 
     public Pair<Boolean, String> parseFile(String file) {
-        interpreter.runScriptlet(PathType.ABSOLUTE, file);
-        return Pair.of(true, "");
+        try {
+            interpreter.runScriptlet(PathType.ABSOLUTE, file);
+            return Pair.of(true, "");
+        } catch (Exception e) {
+            return Pair.of(false, e.toString());
+        }
     }
 }
