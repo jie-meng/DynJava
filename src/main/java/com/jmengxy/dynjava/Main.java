@@ -18,23 +18,26 @@ public class Main {
     }
 
     private void test(DynamicInterpreter interpreter, String script) {
-        interpreter.setString("s", "test");
-        interpreter.setInteger("i", 21);
-        interpreter.setDouble("d", 3.14);
-        interpreter.setBoolean("b", false);
+        try
+        {
+            interpreter.setString("s", "test");
+            interpreter.setInteger("i", 21);
+            interpreter.setDouble("d", 3.14);
+            interpreter.setBoolean("b", false);
 
-        Pair<Boolean, String> pair = interpreter.parseLine(script);
-        if (pair.fst) {
-            System.out.println("s == " + interpreter.getString("s", ""));
-            System.out.println("i == " + interpreter.getInteger("i", 0));
-            System.out.println("d == " + interpreter.getDouble("d", 0.01));
-            System.out.println("b == " + interpreter.getBoolean("b", false));
-        } else {
-            System.err.println("--- Error ---");
-            System.err.println(pair.snd);
+            Pair<Boolean, String> pair = interpreter.parseLine(script);
+            if (pair.fst) {
+                System.out.println("s == " + interpreter.getString("s", ""));
+                System.out.println("i == " + interpreter.getInteger("i", 0));
+                System.out.println("d == " + interpreter.getDouble("d", 0.01));
+                System.out.println("b == " + interpreter.getBoolean("b", false));
+            } else {
+                System.err.println("--- Error ---");
+                System.err.println(pair.snd);
+            }
+        } finally {
+            interpreter.close();
         }
-
-        interpreter.close();
     }
 
 
