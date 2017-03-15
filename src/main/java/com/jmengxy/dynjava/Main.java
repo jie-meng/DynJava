@@ -21,7 +21,7 @@ public class Main {
         interpreter.setString("s", "test");
         interpreter.setInteger("i", 21);
         interpreter.setDouble("d", 3.14);
-        interpreter.setBoolean("b", true);
+        interpreter.setBoolean("b", false);
 
         Pair<Boolean, String> pair = interpreter.parseLine(script);
         if (pair.fst) {
