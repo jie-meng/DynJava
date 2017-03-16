@@ -6,11 +6,11 @@ import org.python.util.PythonInterpreter;
 
 import java.util.Properties;
 
-public class Jython implements DynamicInterpreter {
+public class PyInterpreter implements DynamicInterpreter {
 
-    private PythonInterpreter interpreter;
+    private org.python.util.PythonInterpreter interpreter;
 
-    public Jython() {
+    public PyInterpreter() {
         //http://bugs.jython.org/issue2355
         Properties props = new Properties();
         props.put("python.home","path to the Lib folder");
@@ -18,9 +18,9 @@ public class Jython implements DynamicInterpreter {
         props.put("python.security.respectJavaAccessibility", "false");
         props.put("python.import.site","false");
         Properties preprops = System.getProperties();
-        PythonInterpreter.initialize(preprops, props, new String[0]);
+        org.python.util.PythonInterpreter.initialize(preprops, props, new String[0]);
 
-        interpreter = new PythonInterpreter();
+        interpreter = new org.python.util.PythonInterpreter();
     }
 
     public void close() {

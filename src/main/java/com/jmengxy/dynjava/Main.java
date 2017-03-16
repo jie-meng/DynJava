@@ -1,8 +1,9 @@
 package com.jmengxy.dynjava;
 
 import com.jmengxy.dynjava.dynamics.DynamicInterpreter;
-import com.jmengxy.dynjava.dynamics.JRuby;
-import com.jmengxy.dynjava.dynamics.Jython;
+import com.jmengxy.dynjava.dynamics.GroovyInterpreter;
+import com.jmengxy.dynjava.dynamics.RubyInterpreter;
+import com.jmengxy.dynjava.dynamics.PyInterpreter;
 import com.sun.tools.javac.util.Pair;
 
 public class Main {
@@ -11,10 +12,13 @@ public class Main {
         Main main = new Main();
 
         System.out.println("\npython");
-        main.test(new Jython(), main.generatePythonScript());
+        main.test(new PyInterpreter(), main.generatePythonScript());
 
         System.out.println("\nruby");
-        main.test(new JRuby(), main.generateRubyScript());
+        main.test(new RubyInterpreter(), main.generateRubyScript());
+
+        System.out.println("\ngroovy");
+        main.test(new GroovyInterpreter(), main.generateGroovyScript());
     }
 
     private void test(DynamicInterpreter interpreter, String script) {
@@ -40,7 +44,6 @@ public class Main {
         }
     }
 
-
     private String generatePythonScript() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("s = s + '..ok'\n");
@@ -52,6 +55,16 @@ public class Main {
     }
 
     private String generateRubyScript() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("s = s + '..ok'\n");
+        buffer.append("i = i + 100\n");
+        buffer.append("d = d + 1000\n");
+        buffer.append("b = true\n");
+
+        return buffer.toString();
+    }
+
+    private String generateGroovyScript() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("s = s + '..ok'\n");
         buffer.append("i = i + 100\n");
